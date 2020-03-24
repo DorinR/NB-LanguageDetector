@@ -7,7 +7,6 @@ from typing import List
 def read_tweets_from(filename: str) -> List[Tweet]:
     # get the path to the current directory
     current_directory = sys.path[0]
-    print(f'current directory: {current_directory}')
 
     # construct the absolute path to the file containing the puzzle data
     full_filename = current_directory + filename
