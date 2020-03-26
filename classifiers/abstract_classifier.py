@@ -8,7 +8,7 @@ class AbstractClassifier:
         self.model = model
         self.training_data = training_data
         self.testing_data = testing_data
-        self.distribution = None
+        self.distribution = {}
 
     def train(self):
         pass

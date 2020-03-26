@@ -4,6 +4,7 @@ class Tweet:
         self.user = user
         self.lang = lang
         self.text = text
+        self.language_scores = None
 
     def print_data_old(self):
         print('======< Tweet Data: START >======')

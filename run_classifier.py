@@ -7,7 +7,6 @@ from classifiers.trigram_classifier import TrigramClassifier
 
 
 def run_classifier(model: Model, training_tweets: List[Tweet], testing_tweets: List[Tweet]):
-    # model.print_data()
 
     # instantiate classifier
     if model.n_gram_size == 1:
