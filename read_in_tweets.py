@@ -22,7 +22,6 @@ def read_tweets_from(filename: str) -> List[Tweet]:
 
     tweets = []
     for i in range(len(data)):
-        # print(i+1)
         try:
             id_, user, lang, *text = data[i].split()
             tweets.append(Tweet(id_, user, lang, ' '.join(text)))

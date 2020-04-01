@@ -16,6 +16,9 @@ class AbstractClassifier:
     def classify(self):
         pass
 
+    def write_results_to_file(self):
+        pass
+
     def print_data(self):
         print('======< Classifier Data: START >======')
         # print(f'model: {self.model.print_data()}')
