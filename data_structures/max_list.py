@@ -13,5 +13,8 @@ class MaxList:
         else:
             self.data.append(score_tuple)
 
-    def get_max_score(self) -> str:
+    def get_most_likely_language(self) -> str:
         return self.data[0][0]
+
+    def get_max_score(self):
+        return self.data[0][1]
