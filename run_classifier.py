@@ -24,3 +24,6 @@ def run_classifier(model: Model, training_tweets: List[Tweet], testing_tweets: L
 
     # write results to text file
     classifier.save()
+
+    # compute evaluation stats
+    classifier.compute_accuracy()
