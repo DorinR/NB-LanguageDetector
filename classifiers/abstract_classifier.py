@@ -12,6 +12,10 @@ class AbstractClassifier:
         self.distribution = {}
         self.accuracy = None
         self.per_class_precision = None
+        self.per_class_recall = None
+        self.per_class_f1 = None
+        self.macro_f1 = None
+        self.weighted_average_f1 = None
 
     def train(self):
         pass
@@ -48,8 +52,21 @@ class AbstractClassifier:
             if tweet.lang == tweet.language_scores.get_most_likely_language():
                 correct_classifications += 1
         self.accuracy = correct_classifications/len(self.testing_data)
+        print(f'Accuracy is {self.accuracy}')
 
     def compute_per_class_precision(self):
+        pass
+
+    def compute_per_class_recall(self):
+        pass
+
+    def compute_per_class_f1(self):
+        pass
+
+    def compute_macro_f1(self):
+        pass
+
+    def compute_weighted_average_f1(self):
         pass
 
     def print_data(self):

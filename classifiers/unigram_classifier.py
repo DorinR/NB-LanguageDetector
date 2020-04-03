@@ -3,7 +3,7 @@ from typing import List
 from tweet import Tweet
 from model import Model
 from tokenizer import tokenize
-from distribution_initializer import initialize_distribution
+from distribution_initializer import initialize_distribution_unigram
 from math import log10
 from data_structures.max_list import MaxList
 
@@ -16,11 +16,13 @@ class UnigramClassifier(AbstractClassifier):
 
     def train(self):
         print('Training Unigram Classifier...')
-        self.distribution = initialize_distribution(self.model.vocabulary)
+        self.distribution = initialize_distribution_unigram(
+            self.model.vocabulary)
 
         # count characters in all training tweets
         for tweet in self.training_data:
             tweet_characters = tokenize(self.model.vocabulary, tweet.text)
+            print(tweet_characters)
             for char in tweet_characters:
                 self.distribution[tweet.lang][char] += 1
         # print('Dictionary after counting characters in training set:')
@@ -56,8 +58,8 @@ class UnigramClassifier(AbstractClassifier):
             for letter in self.distribution[language]:
                 self.distribution[language][letter] = self.distribution[language][letter] / \
                     self.distribution[language]['total']
-        # print('Final character probability distribution after training: ')
-        # print(self.distribution)
+        print('Final character probability distribution after training: ')
+        print(self.distribution)
 
     def classify(self):
         print('Classifying Test Tweets ...')

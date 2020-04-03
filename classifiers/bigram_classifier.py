@@ -10,7 +10,6 @@ class BigramClassifier(AbstractClassifier):
 
     def train(self):
         print('Training Bigram Classifier...')
-        self.distribution = 'bigram distribution'
 
     def classify(self):
         print('Bigram classifier is classifying test tweets...')
