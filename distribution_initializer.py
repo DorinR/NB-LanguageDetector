@@ -10,11 +10,11 @@ def initialize_distribution_unigram(vocab: int):
     for lang in languages:
         distribution[lang] = {}
 
-    if vocab == 1:
+    if vocab == 0:
         for key in distribution:
             for letter in ascii_lowercase:
                 distribution[key][letter] = 0
-    elif vocab == 2:
+    elif vocab == 1:
         for key in distribution:
             for letter in ascii_letters:
                 distribution[key][letter] = 0
@@ -24,16 +24,9 @@ def initialize_distribution_unigram(vocab: int):
     return distribution
 
 
-def initialize_distribution(vocab: int):
+def initialize_distribution():
     distribution = {}
     for lang in languages:
         distribution[lang] = {}
-
-    if vocab == 1:
-        pass
-    if vocab == 2:
-        pass
-    else:
-        pass
 
     return distribution

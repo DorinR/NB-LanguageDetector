@@ -6,10 +6,10 @@ import string
 
 def tokenize(vocab_type: int, text: str) -> str:
     """Tokeninzer designed specifically for Unigram Classifier because we are not keeping track of out-of-vocab character existence"""
-    if vocab_type == 1:
+    if vocab_type == 0:
         token_list = [c for c in text if c in ascii_lowercase]
         tokens = ''.join(token_list)
-    elif vocab_type == 2:
+    elif vocab_type == 1:
         token_list = [c for c in text if c in ascii_letters]
         tokens = ''.join(token_list)
     else:
@@ -22,19 +22,19 @@ def tokenize(vocab_type: int, text: str) -> str:
 
 def get_n_grams(text: str, vocab_type: int, n: int) -> List[str]:
     # pre-processing string, to replace out-of-vocabulary characters with *'s
-    if vocab_type == 1:
-        text = text.lower()
-        text = ''.join(
-            [c if c in ascii_lowercase else '*' for c in text])
-    elif vocab_type == 2:
-        text = ''.join(
+    if vocab_type == 0:
+        text_lower = text.lower()
+        cleaned_text = ''.join(
+            [c if c in ascii_lowercase else '*' for c in text_lower])
+    elif vocab_type == 1:
+        cleaned_text = ''.join(
             [c if c in ascii_letters else '*' for c in text])
     else:
-        text = ''.join(
+        cleaned_text = ''.join(
             [c if c.isalpha() else '*' for c in text])
 
     # formation of bigrams
-    n_gram = [text[i:i+n]
-              for i, c in enumerate(text) if len(text[i:i+n]) == n and '*' not in text[i:i+n]]
+    n_gram = [cleaned_text[i:i+n]
+              for i, c in enumerate(cleaned_text) if len(cleaned_text[i:i+n]) == n and '*' not in cleaned_text[i:i+n]]
 
     return n_gram

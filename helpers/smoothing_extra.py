@@ -7,6 +7,6 @@ VOCAB_SIZES = {
 }
 
 
-def get_smoothing_extra(vocab: int, n_gram_size: int, non_zero_vocab_entries: int) -> float:
-    total_possible_n_grams = VOCAB_SIZES[vocab]**n_gram_size
-    return total_possible_n_grams - non_zero_vocab_entries
+def get_smoothing_extra(vocab: int, n_gram_size: int, delta: float) -> float:
+    extra_value_to_add_to_total = (VOCAB_SIZES[vocab]**n_gram_size)*delta
+    return extra_value_to_add_to_total

@@ -3,7 +3,7 @@ from typing import List
 from tweet import Tweet
 from model import Model
 from tokenizer import tokenize
-from distribution_initializer import initialize_distribution_unigram
+from distribution_initializer import initialize_distribution
 from math import log10
 from data_structures.max_list import MaxList
 
@@ -16,23 +16,18 @@ class UnigramClassifier(AbstractClassifier):
 
     def train(self):
         print('Training Unigram Classifier...')
-        self.distribution = initialize_distribution_unigram(
-            self.model.vocabulary)
+        self.distribution = initialize_distribution()
 
         # count characters in all training tweets
         for tweet in self.training_data:
             tweet_characters = tokenize(self.model.vocabulary, tweet.text)
             print(tweet_characters)
             for char in tweet_characters:
-                self.distribution[tweet.lang][char] += 1
+                if char in self.distribution[tweet.lang]:
+                    self.distribution[tweet.lang][char] += 1
+                else:
+                    self.distribution[tweet.lang][char] = 1
         # print('Dictionary after counting characters in training set:')
-        # print(self.distribution)
-
-        # add delta smoothing
-        for language in self.distribution:
-            for letter in self.distribution[language]:
-                self.distribution[language][letter] += self.model.delta
-        # print('Dictionary after adding delta smoothing:')
         # print(self.distribution)
 
         # count total letters for each language
@@ -42,6 +37,13 @@ class UnigramClassifier(AbstractClassifier):
                 total_letter_count += self.distribution[language][letter]
             self.distribution[language]["total"] = total_letter_count
         # print('Dictionary with smoothing and totals:')
+        # print(self.distribution)
+
+        # add delta smoothing
+        for language in self.distribution:
+            for letter in self.distribution[language]:
+                self.distribution[language][letter] += self.model.delta
+        # print('Dictionary after adding delta smoothing:')
         # print(self.distribution)
 
         # count total number of tokens in all languages (used for computing p(lang))
@@ -69,9 +71,16 @@ class UnigramClassifier(AbstractClassifier):
             for language in languages:
                 tweet_score_per_language = 0
                 for letter in tweet_letters:
-                    tweet_score_per_language += log10(
-                        self.distribution[language][letter])
-                tweet_score_per_language += self.distribution[language]['p_language']
+                    try:
+                        tweet_score_per_language += log10(
+                            self.distribution[language][letter])
+                    except:
+                        if self.model.delta:
+                            tweet_score_per_language += log10(self.model.delta)
+                        else:
+                            continue
+                tweet_score_per_language += log10(
+                    self.distribution[language]['p_language'])
                 language_scores.insert((language, tweet_score_per_language))
             tweet.language_scores = language_scores
         # testing
