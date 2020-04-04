@@ -24,7 +24,7 @@ def initialize_distribution_unigram(vocab: int):
     return distribution
 
 
-def initialize_distribution_bigram(vocab: int):
+def initialize_distribution(vocab: int):
     distribution = {}
     for lang in languages:
         distribution[lang] = {}
@@ -36,6 +36,4 @@ def initialize_distribution_bigram(vocab: int):
     else:
         pass
 
-
-def get_bigrams(text: str) -> List[str]:
-    pass
+    return distribution

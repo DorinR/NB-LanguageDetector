@@ -62,7 +62,7 @@ class UnigramClassifier(AbstractClassifier):
         print(self.distribution)
 
     def classify(self):
-        print('Classifying Test Tweets ...')
+        print('Unigram Classifier is classifying Test Tweets ...')
         for tweet in self.testing_data:
             language_scores = MaxList()
             tweet_letters = tokenize(self.model.vocabulary, tweet.text)
