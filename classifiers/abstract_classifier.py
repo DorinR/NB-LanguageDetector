@@ -49,19 +49,19 @@ class AbstractClassifier:
         # compose per-class precision line
         per_class_precision = []
         for class_ in self.per_class_precision:
-            per_class_precision.append(self.per_class_precision[class_])
+            per_class_precision.append(str(self.per_class_precision[class_]))
         per_class_precision_string = "  ".join(per_class_precision)
         data_to_write_to_file.append(per_class_precision_string)
         # compose per-class recall line
         per_class_recall = []
         for class_ in self.per_class_recall:
-            per_class_recall.append(self.per_class_recall[class_])
+            per_class_recall.append(str(self.per_class_recall[class_]))
         per_class_recall_string = "  ".join(per_class_recall)
         data_to_write_to_file.append(per_class_recall_string)
         # compose per-class f1 measure line
         per_class_f1 = []
         for class_ in self.per_class_f1:
-            per_class_f1.append(self.per_class_f1[class_])
+            per_class_f1.append(str(self.per_class_f1[class_]))
         per_class_f1_string = "  ".join(per_class_f1)
         data_to_write_to_file.append(per_class_f1_string)
         # compose macro-F1 and weighted-average-f1 line
