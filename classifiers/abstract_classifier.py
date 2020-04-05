@@ -3,6 +3,8 @@ from tweet import Tweet
 from typing import List
 import os.path
 
+languages = ['eu', 'ca', 'gl', 'es', 'en', 'pt']
+
 
 class AbstractClassifier:
     def __init__(self, model: Model, training_data: List[Tweet], testing_data: List[Tweet]):
@@ -55,19 +57,66 @@ class AbstractClassifier:
         print(f'Accuracy is {self.accuracy}')
 
     def compute_per_class_precision(self):
-        pass
+        class_precisions = {}
+        for language in languages:
+            tp = 0
+            tp_plus_fp = 0
+            for tweet in self.testing_data:
+                if tweet.language_scores.get_most_likely_language() == language:
+                    tp_plus_fp += 1
+                    if tweet.lang == language:
+                        tp += 1
+            class_precisions[language] = tp/tp_plus_fp
+        self.per_class_precision = class_precisions
+        print(f'Per-Class Precision is: {self.per_class_precision}')
 
     def compute_per_class_recall(self):
-        pass
+        class_recalls = {}
+        for language in languages:
+            tp = 0
+            tp_plus_fn = 0
+            for tweet in self.testing_data:
+                if tweet.lang == language:
+                    tp_plus_fn += 1
+                    if tweet.language_scores.get_most_likely_language() == language:
+                        tp += 1
+            class_recalls[language] = tp/tp_plus_fn
+        self.per_class_recall = class_recalls
+        print(f'Per-Class Recall is: {self.per_class_recall}')
 
     def compute_per_class_f1(self):
-        pass
+        class_f1 = {}
+        for language in languages:
+            try:
+                class_f1[language] = (2*self.per_class_precision[language]*self.per_class_recall[language])/(
+                    self.per_class_precision[language]+self.per_class_recall[language])
+            except:
+                class_f1[language] = 0
+        self.per_class_f1 = class_f1
+        print(f'Per-Class F1 is: {self.per_class_f1}')
 
     def compute_macro_f1(self):
-        pass
+        total_f1 = 0
+        for language in self.per_class_f1:
+            total_f1 += self.per_class_f1[language]
+        self.macro_f1 = total_f1/len(self.per_class_f1)
+        print(f'Macro F1 is: {self.macro_f1}')
 
     def compute_weighted_average_f1(self):
-        pass
+        weighted_f1 = 0
+        for language in self.per_class_f1:
+            weighted_f1 += self.distribution[language]['p_language'] * \
+                self.per_class_f1[language]
+        self.weighted_average_f1 = weighted_f1
+        print(f'Weighted F1 is: {self.weighted_average_f1}')
+
+    def evaluate(self):
+        self.compute_accuracy()
+        self.compute_per_class_precision()
+        self.compute_per_class_recall()
+        self.compute_per_class_f1()
+        self.compute_macro_f1()
+        self.compute_weighted_average_f1()
 
     def print_data(self):
         """method used for testing"""
