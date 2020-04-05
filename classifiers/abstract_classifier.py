@@ -40,7 +40,36 @@ class AbstractClassifier:
         self.write_to_file(data_to_write_to_file)
 
     def save_eval(self):
-        pass
+        print('Saving Evaluation Results ...')
+        data_to_write_to_file = []
+        # compose filename
+        filename = f'eval_{self.model.vocabulary}_{self.model.n_gram_size}_{self.model.delta}.txt'
+        # add accuracy
+        data_to_write_to_file.append(self.accuracy)
+        # compose per-class precision line
+        per_class_precision = []
+        for class_ in self.per_class_precision:
+            per_class_precision.append(self.per_class_precision[class_])
+        per_class_precision_string = "  ".join(per_class_precision)
+        data_to_write_to_file.append(per_class_precision_string)
+        # compose per-class recall line
+        per_class_recall = []
+        for class_ in self.per_class_recall:
+            per_class_recall.append(self.per_class_recall[class_])
+        per_class_recall_string = "  ".join(per_class_recall)
+        data_to_write_to_file.append(per_class_recall_string)
+        # compose per-class f1 measure line
+        per_class_f1 = []
+        for class_ in self.per_class_f1:
+            per_class_f1.append(self.per_class_f1[class_])
+        per_class_f1_string = "  ".join(per_class_f1)
+        data_to_write_to_file.append(per_class_f1_string)
+        # compose macro-F1 and weighted-average-f1 line
+        macros = []
+        macros_string = f'{self.macro_f1}  {self.weighted_average_f1}'
+        data_to_write_to_file.append(macros_string)
+        # write it all to file
+        self.write_to_file(data_to_write_to_file)
 
     def write_to_file(self, data_to_write):
         directory = os.path.join(f'results/{data_to_write.pop(0)}')
