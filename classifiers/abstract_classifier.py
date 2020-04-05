@@ -95,7 +95,10 @@ class AbstractClassifier:
                     tp_plus_fp += 1
                     if tweet.lang == language:
                         tp += 1
-            class_precisions[language] = tp/tp_plus_fp
+            try:
+                class_precisions[language] = tp/tp_plus_fp
+            except:
+                class_precisions[language] = 0
         self.per_class_precision = class_precisions
 
     def compute_per_class_recall(self):
@@ -108,7 +111,10 @@ class AbstractClassifier:
                     tp_plus_fn += 1
                     if tweet.language_scores.get_most_likely_language() == language:
                         tp += 1
-            class_recalls[language] = tp/tp_plus_fn
+            try:
+                class_recalls[language] = tp/tp_plus_fn
+            except:
+                class_recalls[language] = 0
         self.per_class_recall = class_recalls
 
     def compute_per_class_f1(self):
@@ -125,7 +131,10 @@ class AbstractClassifier:
         total_f1 = 0
         for language in self.per_class_f1:
             total_f1 += self.per_class_f1[language]
-        self.macro_f1 = total_f1/len(self.per_class_f1)
+        try:
+            self.macro_f1 = total_f1/len(self.per_class_f1)
+        except:
+            self.macro_f1 = 0
 
     def compute_weighted_average_f1(self):
         weighted_f1 = 0
