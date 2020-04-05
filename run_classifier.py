@@ -25,5 +25,5 @@ def run_classifier(model: Model, training_tweets: List[Tweet], testing_tweets: L
     # compute evaluation stats
     classifier.evaluate()
 
-    # write results to text files
+    # write trace and eval to .txt files
     classifier.save()

@@ -18,6 +18,7 @@ class TrigramClassifier(AbstractClassifier):
     def train(self):
         print('Training Trigram Classifier...')
         self.distribution = initialize_distribution()
+
         # add counts to dictionary
         for tweet in self.training_data:
             tweet_trigrams = get_n_grams(
@@ -37,14 +38,11 @@ class TrigramClassifier(AbstractClassifier):
                 self.model.vocabulary, self.model.n_gram_size, self.model.delta)
             self.distribution[language]["total"] = total_token_count + \
                 smoothing_extra
-        # print('Dictionary with smoothing and totals:')
-        # print(self.distribution)
 
         # add delta smoothing to each letter currently in dictionary
         for language in self.distribution:
             for letter in self.distribution[language]:
                 self.distribution[language][letter] += self.model.delta
-        # print(self.distribution)
 
         # count total number of tokens in all languages (used for computing p(lang))
         total_tokens = 0
@@ -52,16 +50,12 @@ class TrigramClassifier(AbstractClassifier):
             total_tokens += self.distribution[language]['total']
         for language in self.distribution:
             self.distribution[language]['p_language'] = self.distribution[language]['total']/total_tokens
-        # print('Dictionary after computing p_language:')
-        # print(self.distribution)
 
         # compute probabilities of each bigram in each language
         for language in self.distribution:
             for trigram in self.distribution[language]:
                 self.distribution[language][trigram] = self.distribution[language][trigram] / \
                     self.distribution[language]['total']
-        # print('Final character probability distribution after training: ')
-        # print(self.distribution)
 
     def classify(self):
         print('Trigram classifier is classifying test tweets...')
@@ -85,16 +79,3 @@ class TrigramClassifier(AbstractClassifier):
                     self.distribution[language]['p_language'])
                 language_scores.insert((language, tweet_score_per_language))
             tweet.language_scores = language_scores
-        # testing
-        # correct = 0
-        # total = 0
-        # for score in self.testing_data[0].language_scores.data:
-        #     print(score)
-        # print(self.testing_data[0].language_scores.get_max_score())
-        # for i in range(len(self.testing_data)):
-        #     total += 1
-        #     if self.testing_data[i].language_scores.get_most_likely_language() == self.testing_data[i].lang:
-        #         correct += 1
-        #     print(
-        #         f'Tweet #{i+1}: Classified as: {self.testing_data[i].language_scores.get_most_likely_language()}. Actual category: {self.testing_data[i].lang}')
-        # print(f'got {correct} out of {total} right')

@@ -84,7 +84,6 @@ class AbstractClassifier:
             if tweet.lang == tweet.language_scores.get_most_likely_language():
                 correct_classifications += 1
         self.accuracy = correct_classifications/len(self.testing_data)
-        # print(f'Accuracy is {self.accuracy}')
 
     def compute_per_class_precision(self):
         class_precisions = {}
@@ -98,7 +97,6 @@ class AbstractClassifier:
                         tp += 1
             class_precisions[language] = tp/tp_plus_fp
         self.per_class_precision = class_precisions
-        # print(f'Per-Class Precision is: {self.per_class_precision}')
 
     def compute_per_class_recall(self):
         class_recalls = {}
@@ -112,7 +110,6 @@ class AbstractClassifier:
                         tp += 1
             class_recalls[language] = tp/tp_plus_fn
         self.per_class_recall = class_recalls
-        # print(f'Per-Class Recall is: {self.per_class_recall}')
 
     def compute_per_class_f1(self):
         class_f1 = {}
@@ -123,14 +120,12 @@ class AbstractClassifier:
             except:
                 class_f1[language] = 0
         self.per_class_f1 = class_f1
-        # print(f'Per-Class F1 is: {self.per_class_f1}')
 
     def compute_macro_f1(self):
         total_f1 = 0
         for language in self.per_class_f1:
             total_f1 += self.per_class_f1[language]
         self.macro_f1 = total_f1/len(self.per_class_f1)
-        # print(f'Macro F1 is: {self.macro_f1}')
 
     def compute_weighted_average_f1(self):
         weighted_f1 = 0
@@ -138,7 +133,6 @@ class AbstractClassifier:
             weighted_f1 += self.distribution[language]['p_language'] * \
                 self.per_class_f1[language]
         self.weighted_average_f1 = weighted_f1
-        # print(f'Weighted F1 is: {self.weighted_average_f1}')
 
     def evaluate(self):
         self.compute_accuracy()
@@ -151,8 +145,5 @@ class AbstractClassifier:
     def print_data(self):
         """method used for testing"""
         print('======< Classifier Data: START >======')
-        # print(f'model: {self.model.print_data()}')
-        self.training_data[0].print_data()
-        self.testing_data[0].print_data()
         print(f'distribution: {self.distribution}')
         print('======< Classifier Data: END >======')

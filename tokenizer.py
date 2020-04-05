@@ -13,7 +13,6 @@ def tokenize(vocab_type: int, text: str) -> str:
         token_list = [c for c in text if c in ascii_letters]
         tokens = ''.join(token_list)
     else:
-        # check if the isprintable needs to be changed to something else based on prof's response
         token_list = [c for c in text if c.isalpha()]
         tokens = ''.join(token_list)
 
@@ -34,7 +33,7 @@ def get_n_grams(text: str, vocab_type: int, n: int) -> List[str]:
             [c if c.isalpha() else '*' for c in text])
 
     # formation of bigrams
-    n_gram = [cleaned_text[i:i+n]
-              for i, c in enumerate(cleaned_text) if len(cleaned_text[i:i+n]) == n and '*' not in cleaned_text[i:i+n]]
+    n_grams = [cleaned_text[i:i+n]
+               for i, c in enumerate(cleaned_text) if len(cleaned_text[i:i+n]) == n and '*' not in cleaned_text[i:i+n]]
 
-    return n_gram
+    return n_grams

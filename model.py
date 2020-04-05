@@ -6,6 +6,7 @@ class Model:
         self.training_file = training_file
         self.testing_file = testing_file
 
+    # used for debugging
     def print_data(self):
         print('======< Model Data: START >======')
         print(f'model vocabulary: {self.vocabulary}')

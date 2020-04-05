@@ -6,6 +6,7 @@ class Tweet:
         self.text = text
         self.language_scores = None
 
+    # used for testing
     def print_data_old(self):
         print('======< Tweet Data: START >======')
         print(f'ID: {self.id}')
@@ -14,5 +15,6 @@ class Tweet:
         print(f'text: {self.text}')
         print('======< Tweet Data: END >======')
 
+    # used for testing
     def print_data(self):
         print(f'Tweet => {self.id} {self.user} {self.lang} {self.text}')

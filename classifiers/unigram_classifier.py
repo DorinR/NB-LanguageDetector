@@ -26,8 +26,6 @@ class UnigramClassifier(AbstractClassifier):
                     self.distribution[tweet.lang][char] += 1
                 else:
                     self.distribution[tweet.lang][char] = 1
-        # print('Dictionary after counting characters in training set:')
-        # print(self.distribution)
 
         # count total letters for each language
         for language in self.distribution:
@@ -35,15 +33,11 @@ class UnigramClassifier(AbstractClassifier):
             for letter in self.distribution[language]:
                 total_letter_count += self.distribution[language][letter]
             self.distribution[language]["total"] = total_letter_count
-        # print('Dictionary with smoothing and totals:')
-        # print(self.distribution)
 
         # add delta smoothing
         for language in self.distribution:
             for letter in self.distribution[language]:
                 self.distribution[language][letter] += self.model.delta
-        # print('Dictionary after adding delta smoothing:')
-        # print(self.distribution)
 
         # count total number of tokens in all languages (used for computing p(lang))
         total_tokens = 0
@@ -51,16 +45,12 @@ class UnigramClassifier(AbstractClassifier):
             total_tokens += self.distribution[language]['total']
         for language in self.distribution:
             self.distribution[language]['p_language'] = self.distribution[language]['total']/total_tokens
-        # print('Dictionary after computing p_language:')
-        # print(self.distribution)
 
         # compute probabilities of each letter in each language
         for language in self.distribution:
             for letter in self.distribution[language]:
                 self.distribution[language][letter] = self.distribution[language][letter] / \
                     self.distribution[language]['total']
-        # print('Final character probability distribution after training: ')
-        # print(self.distribution)
 
     def classify(self):
         print('Unigram Classifier is classifying Test Tweets ...')
@@ -82,16 +72,3 @@ class UnigramClassifier(AbstractClassifier):
                     self.distribution[language]['p_language'])
                 language_scores.insert((language, tweet_score_per_language))
             tweet.language_scores = language_scores
-        # testing
-        # correct = 0
-        # total = 0
-        # for score in self.testing_data[0].language_scores.data:
-        #     print(score)
-        # print(self.testing_data[0].language_scores.get_max_score())
-        # for i in range(len(self.testing_data)):
-        #     total += 1
-        #     if self.testing_data[i].language_scores.get_max_score() == self.testing_data[i].lang:
-        #         correct += 1
-        #     # print(
-        #     #     f'Tweet #{i+1}: Classified as: {self.testing_data[i].language_scores.get_max_score()}. Actual category: {self.testing_data[i].lang}')
-        # print(f'got {correct} out of {total} right')

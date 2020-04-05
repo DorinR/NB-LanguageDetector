@@ -5,25 +5,6 @@ from typing import List
 languages = ['eu', 'ca', 'gl', 'es', 'en', 'pt']
 
 
-def initialize_distribution_unigram(vocab: int):
-    distribution = {}
-    for lang in languages:
-        distribution[lang] = {}
-
-    if vocab == 0:
-        for key in distribution:
-            for letter in ascii_lowercase:
-                distribution[key][letter] = 0
-    elif vocab == 1:
-        for key in distribution:
-            for letter in ascii_letters:
-                distribution[key][letter] = 0
-    else:
-        print('the third one hasn\'t been implemented yet')
-
-    return distribution
-
-
 def initialize_distribution():
     distribution = {}
     for lang in languages:
