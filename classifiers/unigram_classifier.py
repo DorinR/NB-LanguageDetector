@@ -21,7 +21,6 @@ class UnigramClassifier(AbstractClassifier):
         # count characters in all training tweets
         for tweet in self.training_data:
             tweet_characters = tokenize(self.model.vocabulary, tweet.text)
-            print(tweet_characters)
             for char in tweet_characters:
                 if char in self.distribution[tweet.lang]:
                     self.distribution[tweet.lang][char] += 1
@@ -60,8 +59,8 @@ class UnigramClassifier(AbstractClassifier):
             for letter in self.distribution[language]:
                 self.distribution[language][letter] = self.distribution[language][letter] / \
                     self.distribution[language]['total']
-        print('Final character probability distribution after training: ')
-        print(self.distribution)
+        # print('Final character probability distribution after training: ')
+        # print(self.distribution)
 
     def classify(self):
         print('Unigram Classifier is classifying Test Tweets ...')
