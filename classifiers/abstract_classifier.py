@@ -84,6 +84,7 @@ class AbstractClassifier:
             if tweet.lang == tweet.language_scores.get_most_likely_language():
                 correct_classifications += 1
         self.accuracy = correct_classifications/len(self.testing_data)
+        print(f'Accuracy: {self.accuracy}')
 
     def compute_per_class_precision(self):
         class_precisions = {}

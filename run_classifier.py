@@ -34,4 +34,4 @@ def run_classifier(model: Model, training_tweets: List[Tweet], testing_tweets: L
     classifier.evaluate()
 
     # write trace and eval to .txt files
-    classifier.save()
+    # classifier.save()

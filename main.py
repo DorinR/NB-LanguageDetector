@@ -10,7 +10,7 @@ sys.argv.pop(0)
 # getting hyperparameters
 VOCAB_TO_USE, N_GRAM_SIZE, DELTA, TRAINING_FILE, TESTING_FILE, *rest = sys.argv
 # getting parameters for BYOM
-if rest[0]:
+if rest:
     custom_model = True
 else:
     custom_model = False
@@ -18,7 +18,7 @@ else:
 
 # create model object that stores all our hyperparameters
 model = Model(VOCAB_TO_USE, N_GRAM_SIZE, DELTA,
-              TRAINING_FILE, TESTING_FILE, custom_model)
+              TRAINING_FILE, TESTING_FILE, custom_model, rest)
 
 # read in training_data
 training_tweets = read_tweets_from(TRAINING_FILE)

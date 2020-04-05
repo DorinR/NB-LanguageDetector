@@ -37,3 +37,8 @@ def get_n_grams(text: str, vocab_type: int, n: int) -> List[str]:
                for i, c in enumerate(cleaned_text) if len(cleaned_text[i:i+n]) == n and '*' not in cleaned_text[i:i+n]]
 
     return n_grams
+
+
+def get_x_grams(text: str) -> List[str]:
+    """tokenizer for custom model"""
+    pass
