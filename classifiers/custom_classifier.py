@@ -3,8 +3,8 @@ from typing import List
 from tweet import Tweet
 from model import Model
 from distribution_initializer import initialize_distribution
-from tokenizer import get_n_grams
-from helpers.smoothing_extra import get_smoothing_extra
+from tokenizer import get_n_grams, get_x_grams
+from helpers.smoothing_extra import get_vocab_size
 from data_structures.max_list import MaxList
 from math import log10
 
@@ -14,6 +14,7 @@ languages = ['eu', 'ca', 'gl', 'es', 'en', 'pt']
 class CustomClassifier(AbstractClassifier):
     def __init__(self, model: Model, training_data: List[Tweet], testing_data: List[Tweet]):
         super().__init__(model, training_data, testing_data)
+        self.total_overall_tokens = 0
 
     def train(self):
         print('Training Custom Classifier...')
@@ -21,8 +22,8 @@ class CustomClassifier(AbstractClassifier):
 
         # add counts to dictionary
         for tweet in self.training_data:
-            tweet_trigrams = get_n_grams(
-                tweet.text, self.model.vocabulary, self.model.n_gram_size)
+            tweet_trigrams = get_x_grams(
+                tweet.text, self.model.n_gram_size)
             for trigram in tweet_trigrams:
                 if trigram not in self.distribution[tweet.lang]:
                     self.distribution[tweet.lang][trigram] = 1
@@ -34,10 +35,8 @@ class CustomClassifier(AbstractClassifier):
             total_token_count = 0
             for trigram in self.distribution[language]:
                 total_token_count += self.distribution[language][trigram]
-            smoothing_extra = get_smoothing_extra(
-                self.model.vocabulary, self.model.n_gram_size, self.model.delta)
-            self.distribution[language]["total"] = total_token_count + \
-                smoothing_extra
+            self.distribution[language]["total"] = total_token_count
+            self.total_overall_tokens += total_token_count
 
         # add delta smoothing to each letter currently in dictionary
         for language in self.distribution:
@@ -50,7 +49,6 @@ class CustomClassifier(AbstractClassifier):
             total_tokens += self.distribution[language]['total']
         for language in self.distribution:
             self.distribution[language]['p_language'] = self.distribution[language]['total']/total_tokens
-            print(language, self.distribution[language]['p_language'])
 
         # compute probabilities of each bigram in each language
         for language in self.distribution:
@@ -62,8 +60,8 @@ class CustomClassifier(AbstractClassifier):
         print('Custom classifier is classifying test tweets...')
         for tweet in self.testing_data:
             language_scores = MaxList()
-            tweet_bigrams = get_n_grams(
-                tweet.text, self.model.vocabulary, self.model.n_gram_size)
+            tweet_bigrams = get_x_grams(
+                tweet.text, self.model.n_gram_size)
             for language in languages:
                 tweet_score_per_language = 0
                 for trigram in tweet_bigrams:
@@ -71,12 +69,13 @@ class CustomClassifier(AbstractClassifier):
                         tweet_score_per_language += log10(
                             self.distribution[language][trigram])
                     except:
-                        if self.model.delta:
-                            tweet_score_per_language += log10(
-                                self.model.delta/self.distribution[language]['total'])
-                        else:
-                            continue
+                        tweet_score_per_language += log10(
+                            (1/self.total_overall_tokens)/self.distribution[language]['total'])
                 tweet_score_per_language += log10(
                     self.distribution[language]['p_language'])
                 language_scores.insert((language, tweet_score_per_language))
             tweet.language_scores = language_scores
+
+    def save(self):
+        super().save_trace(filename='myModel_trace.txt')
+        super().save_eval(filename='myModel_eval.txt')

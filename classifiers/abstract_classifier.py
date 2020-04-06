@@ -29,21 +29,23 @@ class AbstractClassifier:
         self.save_trace()
         self.save_eval()
 
-    def save_trace(self):
+    def save_trace(self, filename=None):
         print('Saving Classification Results ...')
         data_to_write_to_file = []
-        filename = f'trace_{self.model.vocabulary}_{self.model.n_gram_size}_{self.model.delta}.txt'
+        if not filename:
+            filename = f'trace_{self.model.vocabulary}_{self.model.n_gram_size}_{self.model.delta}.txt'
         data_to_write_to_file.append(filename)
         for tweet in self.testing_data:
             data_to_write_to_file.append(
                 f'{tweet.id}  {tweet.language_scores.get_most_likely_language()}  {tweet.language_scores.get_max_score()}  {tweet.lang}  {"correct" if (tweet.language_scores.get_most_likely_language() == tweet.lang) else "wrong"}')
         self.write_to_file(data_to_write_to_file)
 
-    def save_eval(self):
+    def save_eval(self, filename=None):
         print('Saving Evaluation Results ...')
         data_to_write_to_file = []
         # compose filename
-        filename = f'eval_{self.model.vocabulary}_{self.model.n_gram_size}_{self.model.delta}.txt'
+        if not filename:
+            filename = f'eval_{self.model.vocabulary}_{self.model.n_gram_size}_{self.model.delta}.txt'
         data_to_write_to_file.append(filename)
         # add accuracy
         data_to_write_to_file.append(self.accuracy)

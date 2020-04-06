@@ -4,7 +4,7 @@ from tweet import Tweet
 from model import Model
 from distribution_initializer import initialize_distribution
 from tokenizer import get_n_grams
-from helpers.smoothing_extra import get_smoothing_extra
+from helpers.smoothing_extra import get_vocab_size
 from data_structures.max_list import MaxList
 from math import log10
 
@@ -34,7 +34,7 @@ class BigramClassifier(AbstractClassifier):
             total_token_count = 0
             for bigram in self.distribution[language]:
                 total_token_count += self.distribution[language][bigram]
-            smoothing_extra = get_smoothing_extra(
+            smoothing_extra = get_vocab_size(
                 self.model.vocabulary, self.model.n_gram_size, len(self.distribution[language]))
             self.distribution[language]["total"] = total_token_count + \
                 smoothing_extra

@@ -21,3 +21,12 @@ class MaxList:
 
     def get_max_score(self):
         return self.data[0][1]
+
+    def get_average_score(self):
+        if len(self.data):
+            total = 0
+            for score in self.data:
+                total += score[1]
+            return total/len(self.data)
+        else:
+            return 0

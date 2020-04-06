@@ -39,6 +39,8 @@ def get_n_grams(text: str, vocab_type: int, n: int) -> List[str]:
     return n_grams
 
 
-def get_x_grams(text: str) -> List[str]:
+def get_x_grams(text: str, n: int) -> List[str]:
     """tokenizer for custom model"""
-    pass
+    # formation of bigrams
+    return [text[i:i+n]
+            for i, c in enumerate(text) if len(text[i:i+n]) == n]
